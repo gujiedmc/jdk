@@ -139,31 +139,31 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * The size of the ArrayList (the number of elements it contains).
-     *
+     * 数组长度
      * @serial
      */
     private int size;
 
     /**
-     * Constructs an empty list with the specified initial capacity.
+     * 创建一个指定容器大小的空list
      *
-     * @param  initialCapacity  the initial capacity of the list
+     * @param  initialCapacity  容器初始大小
      * @throws IllegalArgumentException if the specified initial capacity
      *         is negative
      */
     public ArrayList(int initialCapacity) {
-        if (initialCapacity > 0) {
+        if (initialCapacity > 0) { // 指定长度
             this.elementData = new Object[initialCapacity];
-        } else if (initialCapacity == 0) {
+        } else if (initialCapacity == 0) { // 0则设置默认长度
             this.elementData = EMPTY_ELEMENTDATA;
-        } else {
+        } else { // 负数报错
             throw new IllegalArgumentException("Illegal Capacity: "+
                                                initialCapacity);
         }
     }
 
     /**
-     * Constructs an empty list with an initial capacity of ten.
+     * 构建一个默认长度10的空list
      */
     public ArrayList() {
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
@@ -173,19 +173,19 @@ public class ArrayList<E> extends AbstractList<E>
      * Constructs a list containing the elements of the specified
      * collection, in the order they are returned by the collection's
      * iterator.
-     *
+     * 从另外一个集合拷贝一份ArrayList。
      * @param c the collection whose elements are to be placed into this list
      * @throws NullPointerException if the specified collection is null
      */
     public ArrayList(Collection<? extends E> c) {
         Object[] a = c.toArray();
-        if ((size = a.length) != 0) {
-            if (c.getClass() == ArrayList.class) {
+        if ((size = a.length) != 0) { // 如果指定集合不会空，拷贝数据。
+            if (c.getClass() == ArrayList.class) { // 如果指定集合类型也是ArrayList直接拷贝数组
                 elementData = a;
             } else {
-                elementData = Arrays.copyOf(a, size, Object[].class);
+                elementData = Arrays.copyOf(a, size, Object[].class); // 否则通过通过Arrays拷贝数组，不太理解这里为什么区分
             }
-        } else {
+        } else { // 指定集合为空时，创建空ArrayList
             // replace with empty array.
             elementData = EMPTY_ELEMENTDATA;
         }
@@ -224,16 +224,16 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Increases the capacity to ensure that it can hold at least the
      * number of elements specified by the minimum capacity argument.
-     *
-     * @param minCapacity the desired minimum capacity
+     * 扩容数组长度
+     * @param minCapacity the desired minimum capacity 数组最小长度
      * @throws OutOfMemoryError if minCapacity is less than zero
      */
     private Object[] grow(int minCapacity) {
         int oldCapacity = elementData.length;
         if (oldCapacity > 0 || elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
             int newCapacity = ArraysSupport.newLength(oldCapacity,
-                    minCapacity - oldCapacity, /* minimum growth */
-                    oldCapacity >> 1           /* preferred growth */);
+                    minCapacity - oldCapacity, /* minimum growth 最小扩容数量 */
+                    oldCapacity >> 1           /* preferred growth 首先扩容2倍 */);
             return elementData = Arrays.copyOf(elementData, newCapacity);
         } else {
             return elementData = new Object[Math.max(DEFAULT_CAPACITY, minCapacity)];
@@ -438,9 +438,9 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E set(int index, E element) {
-        Objects.checkIndex(index, size);
-        E oldValue = elementData(index);
-        elementData[index] = element;
+        Objects.checkIndex(index, size); // 数组越界检查
+        E oldValue = elementData(index); // 查询之前的元素
+        elementData[index] = element; // 设置新元素
         return oldValue;
     }
 
@@ -450,8 +450,8 @@ public class ArrayList<E> extends AbstractList<E>
      * which helps when add(E) is called in a C1-compiled loop.
      */
     private void add(E e, Object[] elementData, int s) {
-        if (s == elementData.length)
-            elementData = grow();
+        if (s == elementData.length) // 如果长度
+            elementData = grow(); // 扩容
         elementData[s] = e;
         size = s + 1;
     }
@@ -463,7 +463,7 @@ public class ArrayList<E> extends AbstractList<E>
      * @return {@code true} (as specified by {@link Collection#add})
      */
     public boolean add(E e) {
-        modCount++;
+        modCount++; // 修改次数+1
         add(e, elementData, size);
         return true;
     }
@@ -472,8 +472,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Inserts the specified element at the specified position in this
      * list. Shifts the element currently at that position (if any) and
      * any subsequent elements to the right (adds one to their indices).
-     *
-     * @param index index at which the specified element is to be inserted
+     * 在指定位置上添加新元素，将后边已有的数据向右移动
+     * @param index index at which the specified element is to be inserted 指定位置
      * @param element element to be inserted
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
@@ -486,7 +486,7 @@ public class ArrayList<E> extends AbstractList<E>
             elementData = grow();
         System.arraycopy(elementData, index,
                          elementData, index + 1,
-                         s - index);
+                         s - index); // 拷贝数组
         elementData[index] = element;
         size = s + 1;
     }
