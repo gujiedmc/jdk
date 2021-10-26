@@ -127,43 +127,43 @@ public class LinkedList<E>
      * Links e as first element.
      */
     private void linkFirst(E e) {
-        final Node<E> f = first;
-        final Node<E> newNode = new Node<>(null, e, f);
-        first = newNode;
-        if (f == null)
+        final Node<E> f = first; // 旧的队首节点
+        final Node<E> newNode = new Node<>(null, e, f); // 创建新的节点，前序节点为null，后序节点指向之前的队首节点
+        first = newNode; // 队首节点指向新创建的节点
+        if (f == null) // 如果旧的队首节点为null，说明队列直接没有元素，队尾节点也指向新创建的节点
             last = newNode;
-        else
+        else // 如果旧的队首节点不为null，将旧的队首节点的前序节点指向新创建的节点
             f.prev = newNode;
         size++;
         modCount++;
     }
 
     /**
-     * Links e as last element.
+     * 在队尾添加一个元素
      */
     void linkLast(E e) {
-        final Node<E> l = last;
-        final Node<E> newNode = new Node<>(l, e, null);
-        last = newNode;
-        if (l == null)
+        final Node<E> l = last; // 旧的队尾节点
+        final Node<E> newNode = new Node<>(l, e, null); // 创建新的节点，前序节点是之前的最后节点，后序节点为null
+        last = newNode; // 队尾节点指向新创建的节点
+        if (l == null) // 如果旧的队尾节点为null，说明队列直接没有元素，队首节点也指向新创建的节点
             first = newNode;
-        else
+        else // 如果前序节点不为null，将前序节点的后序节点指向新创建的节点
             l.next = newNode;
         size++;
         modCount++;
     }
 
     /**
-     * Inserts element e before non-null Node succ.
+     * 在非null节点前面插入一个新的元素
      */
     void linkBefore(E e, Node<E> succ) {
         // assert succ != null;
-        final Node<E> pred = succ.prev;
-        final Node<E> newNode = new Node<>(pred, e, succ);
-        succ.prev = newNode;
-        if (pred == null)
+        final Node<E> pred = succ.prev; // 指定节点的前序节点
+        final Node<E> newNode = new Node<>(pred, e, succ); // 给新元素创建一个新的节点，前序节点指向指定节点的前序节点，后序节点指向指定节点
+        succ.prev = newNode; // 指定节点的前序节点指向新创建的节点
+        if (pred == null) // 如果指定节点之前没有前序节点，则将队首节点指向新创建的节点
             first = newNode;
-        else
+        else // 否则将指定节点原来的前序节点的后序节点指向新创建节点
             pred.next = newNode;
         size++;
         modCount++;
@@ -208,7 +208,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Unlinks non-null node x.
+     * 删除指定节点，将前序节点和后序节点链接上
      */
     E unlink(Node<E> x) {
         // assert x != null;
@@ -298,7 +298,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Appends the specified element to the end of this list.
+     * 在队尾添加一个元素
      *
      * <p>This method is equivalent to {@link #add}.
      *
@@ -331,7 +331,7 @@ public class LinkedList<E>
     }
 
     /**
-     * Appends the specified element to the end of this list.
+     * 在队尾添加一个元素
      *
      * <p>This method is equivalent to {@link #addLast}.
      *
@@ -477,7 +477,7 @@ public class LinkedList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E get(int index) {
-        checkElementIndex(index);
+        checkElementIndex(index); // 检查index是否越界
         return node(index).item;
     }
 
@@ -502,17 +502,17 @@ public class LinkedList<E>
      * Inserts the specified element at the specified position in this list.
      * Shifts the element currently at that position (if any) and any
      * subsequent elements to the right (adds one to their indices).
-     *
+     * 在指定位置插入元素
      * @param index index at which the specified element is to be inserted
      * @param element element to be inserted
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public void add(int index, E element) {
-        checkPositionIndex(index);
+        checkPositionIndex(index); // 检查index是否越界，index >= 0 && index <= size
 
-        if (index == size)
+        if (index == size) // 如果指定位置刚好等于长度，说明是要在队尾新加一个元素
             linkLast(element);
-        else
+        else // 否则需要向指定节点前面插入元素
             linkBefore(element, node(index));
     }
 
@@ -565,12 +565,12 @@ public class LinkedList<E>
     }
 
     /**
-     * Returns the (non-null) Node at the specified element index.
+     * 返回指定index上的节点，如果index在前半部分，则从队首开始遍历，否则从队尾开始遍历
      */
     Node<E> node(int index) {
         // assert isElementIndex(index);
 
-        if (index < (size >> 1)) {
+        if (index < (size >> 1)) { //
             Node<E> x = first;
             for (int i = 0; i < index; i++)
                 x = x.next;
