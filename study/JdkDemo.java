@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 测试jdk
@@ -15,5 +17,11 @@ public class JdkDemo {
 
         list.add("haha");
         list.add("haha");
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < 15; i++) {
+            map.put(i, i);
+        }
     }
 }
