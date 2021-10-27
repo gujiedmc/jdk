@@ -20,8 +20,10 @@ public class JdkDemo {
 
         Map<Integer, Integer> map = new HashMap<>();
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 15; i > 0; i--) {
             map.put(i, i);
         }
+
+        map.forEach((integer, integer2) -> System.out.println(integer));
     }
 }

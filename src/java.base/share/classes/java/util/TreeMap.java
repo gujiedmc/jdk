@@ -782,14 +782,14 @@ public class TreeMap<K,V>
         // split comparator and comparable paths
         Comparator<? super K> cpr = comparator;
         if (cpr != null) {
-            do {
+            do { // 从root节点开始遍历，通过二分法遍历，直到遍历节点为null
                 parent = t;
-                cmp = cpr.compare(key, t.key);
-                if (cmp < 0)
+                cmp = cpr.compare(key, t.key); // 新增key和当前节点的key比较结果
+                if (cmp < 0) // 需要遍历左子节点
                     t = t.left;
-                else if (cmp > 0)
+                else if (cmp > 0) // 需要遍历右子节点
                     t = t.right;
-                else {
+                else { // key相等，需要覆盖
                     V oldValue = t.value;
                     if (replaceOld || oldValue == null) {
                         t.value = value;

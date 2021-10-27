@@ -1580,7 +1580,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         final Node<K,V> nextNode() {
             Node<K,V>[] t;
             Node<K,V> e = next;
-            if (modCount != expectedModCount)
+            if (modCount != expectedModCount) // 检查遍历过程中是否有修改
                 throw new ConcurrentModificationException();
             if (e == null)
                 throw new NoSuchElementException();
